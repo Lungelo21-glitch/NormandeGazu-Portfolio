@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuminaStore</title>
+
+    <style>
+    /* ===== RESET & BASE STYLES =====*/
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    /* ===== COLOR PALETTE (African-inspired) ===== */
+    :root {
+        ---primary: #c2410c;   /* Terracotta orange - main brand color */
+        --accent: #854d0e;     /* Deep gold/brown */
+        --dark: #3f2a1e;       /* Rich brown text */
+        --light: #f8f1e9;      /* Cream background */
+        --highlight: #166534;  /* Deep green accent */
+    }
+
+    /* ===== NAVBAR STYLES ===== */
+    header {
+        background-color: white;
+        box-shadow: 0 2px rgba(0, 0, 0, 0.08);
+        position: sticky;
+        top: o;
+        z-index: 100;
+    }
+
+    .navbar {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1rem 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .logo {
+        font-size: 1.8rem;
+        font-weight:700;
+        color: var(---primary);
+        text-decoration: none;
+        letter-spacing: -1px;
+    }
+
+    .logo span {
+        color: var(--highlight);
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 2rem;
+        list-style: none;
+    }
+
+    .nav-links a {
+        color: var(--dark);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+        color: var(---primary);
+    }
+
+    .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .search-bar input {
+        width: 100%;
+        padding: 0.65rem 1rem 0.65 2.5rem;
+        border: 2px solid #e5d9c0;
+        font-size: 0.95rem;
+        background-color: white;
+        transition: all 0.3s ease;
+    }
+
+    search-bar input:focus {
+        outline: none;
+        border-color: var(---primary);
+        box-shadow: 0 0 0 3px rgba(194, 65, 12, 0.1)
+    }
+
+    .search-bar i {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #9c7c5e;
+    }
+
+    .cart-icon {
+        position: relative;
+        font-size: 1.4rem;
+        color: var(--dark);
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    .cart-icon:hover {
+        color: var(---primary);
+    }
+
+    .cart-count {
+        position: absolute;
+        top: -6px;
+        right: -8px;
+        background-color: var(---primary);
+        color: white;
+        font-size: 0.7rem;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+    }
+
+    /* Hamburger */
+    .hamburger {
+        display: none;
+        font-size: 1.8rem;
+        cursor: pointer;
+        color: var(--dark);
+    }
+
+    /* Mobile Menu */
+    .mobile-menu {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100vh;
+        background-color: white;
+        z-index: 200;
+        padding: 2rem;
+        padding: 2rem;
+        transition: left 0.4s ease;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mobile-menu.active {
+        left: 0;
+    }
+
+    .mobile-menu .nav-links {
+        flex-direction: column;
+        gap: 2rem;
+        margin-top: 4rem;
+        font-size: 1.4rem;
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.45)),
+                    url('https://picsum.photos/id/1015/2000/1200') center/cover no-repeat;
+        height: 85vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+    }
+
+    .hero-content {
+        max-width: 700px;
+        padding: 2rem;
+    }
+
+    .hero h1 {
+        font-size: 4.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        line-height: 1,1;
+    }
+
+    .hero p {
+        font-size: 1.35rem;
+        margin-bottom: 2rem;
+        opacity: 0.95;
+    }
+
+    .btn {
+        display: inline-block;
+        background-color: var(---primary);
+        color: white;
+        padding: 1rem 2.5rem;
+        border-radius: 9999px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+        background-color: #9c2d0e;
+        transform: translateY(-3px);
+    }
+
+    /* ===== PRODUCTS SECTION ===== */
+    .products-section {
+        max-width: 1200px;
+        margin: 4rem auto;
+        padding: 0 1.5rem;
+    }
+
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--dark);
+    }
+
+    .filters {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .filter-btn {
+        padding: 0.6rem 1.4rem;
+        background-color: white;
+        border: 2px solid #e5d9c0;
+        border-radius: 9999px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+        background-color: var(---primary);
+        color: white;
+        border-color: var(---primary);
+    }
+
+    /* CSS Grid for Products */
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+    }
+
+    .product-card {
+        background-color: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+        transition: all 0.4s ease;
+    }
+
+    .product-card:hover {
+        transform: translateY(-12px);
+        box-shadow: 0 20px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    .product-image {
+        height: 320px;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+    }
+
+    .product-image::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.25), transparent);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .product-card:hover .product-image::after {
+        opacity: 1;
+    }
+
+    .product-info {
+        padding: 1.25rem;
+    }
+
+    .product-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--dark);
+    }
+
+    product-price {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: var(---primary);
+        margin-bottom: 1rem;
+    }
+
+    .add-to-cart {
+        width:100%;
+        padding: 0.85rem;
+        background-color: var(--dark);
+        color: white;
+        border: none;
+        border-radius: 9999px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .add-to-cart:hover {
+        background-color: var(---primary);
+        transform: scale(1.03);
+    }
+
+    /* ===== RESPONSIVE DESIGN (Media Queries) ===== */
+    @media (max-width: 992px) {
+        .nav-links {
+            display: none;
+        }
+
+        .search-bar {
+            width: 180px;
+        }
+
+        .hamburger {
+            display: block;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .hero h1 {
+            font-size: 3rem;
+        }
+
+        .navbar {
+            padding: 1rem 1rem;
+        }
+    }
+    </style>
+    </head>
+    <body>
+
+        <header>
+            <nav class="navbar">
+                <a href="#" class="logo">Lumina<span>Store</span></a>
+
+                <ul class="nav-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Shop</a></li>
+                    <li><a href="#">Collections</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+
+                <div class="nav-right">
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search treasures...">
+                    </div>
+
+                    <div class="cart-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="cart-count">0</span>
+                    </div>
+
+                    <div class="hamburger" id="hamburger">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Mobile Menu-->
+         <div class="mobile-menu" id="mobileMenu">
+            <div style="display: flex; justify-content: flex-end; font-size: 2rem; cursor: pointer;" id="closeMenu">
+                x
+            </div>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Shop</a></li>
+                <li><a href="#">Collections</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+         </div>
+
+        <main>
+            <section class="hero">
+                <div class="hero-content">
+                    <h1>Timeless Treasures.<br>Rooted in Africa.</h1>
+                    <p>Handpicked home decor, fashion & art inspired by African heritage and modern living</p>
+                    <a href="#" class="btn">Shop Now</a>
+                </div>
+            </section>
+
+            <!-- Products Section -->
+             <section class="products-section">
+                <div class="section-header">
+                    <h2 class="section-title">Featured Treasures</h2>
+
+                    <div class="filters">
+                        <button class="filter-btn active" data-category="all">All</button>
+                        <button class="filter-btn" data-category="decor">Home Decor</button>
+                        <button class="filter-btn" data-category="fashion">Fashion</button>
+                        <button class="filter-btn" data-category="art">Art</button>
+                    </div>
+                </div>
+
+                <div class="products-grid">
+                    <!-- Product Card -->
+                     <div class="product-card" data-category="decor">
+                        <div class="product-image" style="background-image: url('C:\Users\lunge\Downloads\WhatsApp Image 2026-04-03 at 13.01.39.jpeg');"></div>
+                        <div class="product-info">
+                            <h3 class="product-title">Handwoven Zulu Basket</h3>
+                            <div class="product price">R 450</div>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                     </div>
+
+                     <!-- Product Card 2 -->
+                      <div class="product-card" data-category="fashion">
+                        <div class="product-image" style="background-image: url('C:\Users\lunge\Downloads\WhatsApp Image 2026-04-03 at 13.06.35.jpeg');"></div>
+                        <div class="product-info">
+                            <h3 class="product-title">Beaded Leather Sandals</h3>
+                            <div class="product-price">R 890</div>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                      </div>
+
+                      <!-- Product Card 3 -->
+                       <div class="product-card" data-category="art">
+                        <div class="product-image" style="background-image: url('C:\Users\lunge\Downloads\WhatsApp Image 2026-04-03 at 13.05.48.jpeg');"></div>
+                        <div class="product-info">
+                            <h3 class="product-title">Ndebele Pattern Wall Art</h3>
+                            <div class="product-price">R 1,250</div>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                       </div>
+
+                       <!-- Product Card4 -->
+                        <div class="product-card" data-category="decor">
+                            <div class="product-image" style="background-image: url('C:\Users\lunge\Downloads\WhatsApp Image 2026-04-03 at 13.07.17.jpeg');"></div>
+                            <div class="product-info">
+                                <h3 class="product-title">Terracotta Ceramic Vase</h3>
+                                <div class="add-to-cart">Add to Cart</div>
+                            </div>
+                        </div>
+                </div>
+             </section>
+
+             <script src="script.js"></script>
+        </main>
+
+        <footer style="background:#3f2a1e; color:white; text-align: center; padding: 2rem; margin-top: 4rem;">
+            <p>&copy; 2026 LuminaStore .Durban, South Africa . Made with :) by Normande</p>
+        </footer>
+    </body>
+</html>
